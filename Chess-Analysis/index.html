@@ -1,0 +1,822 @@
+<html lang="en"><head>
+<meta charset="utf-8">
+<title>ChessAnalysis - Next Move Suggestion Tool</title>
+<meta name="description" content="Analyze any chess position with the Stockfish - strongest chess engine. This online calculator allow you to set up chessboard in real-time and get next best move in a few seconds.">
+<meta name="keywords" content="chess, cheat, next, best, move, calculator, online, stockfish, engine, analyze, position, setup, constructor">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<script type="text/javascript" async="" src="https://www.google-analytics.com/analytics.js"></script><script type="text/javascript" async="" src="https://mc.yandex.ru/metrika/watch.js"></script><script type="text/javascript" async="" src="https://www.google-analytics.com/analytics.js"></script><script type="text/javascript" async="" src="https://www.googletagmanager.com/gtag/js?id=G-V7C6VKX1M1&amp;cx=c&amp;gtm=457e5711h2za200&amp;tag_exp=101509157~103116026~103200004~103233427~103351869~103351871~104684208~104684211~104718208~104839054~104839056~104885889~104885891"></script><script type="text/javascript" async="" src="https://mc.yandex.ru/metrika/watch.js"></script><script type="text/javascript" async="" src="https://www.google-analytics.com/analytics.js"></script><script type="text/javascript" async="" src="https://www.googletagmanager.com/gtag/js?id=G-V7C6VKX1M1&amp;cx=c&amp;gtm=457e5711h2za200&amp;tag_exp=101509157~103116026~103200004~103233427~103351869~103351871~104684208~104684211~104718208~104839054~104839056~104885889~104885891"></script><script type="text/javascript" async="" src="https://mc.yandex.ru/metrika/watch.js"></script><script type="text/javascript" async="" src="https://www.google-analytics.com/analytics.js"></script><script type="text/javascript" async="" src="https://www.googletagmanager.com/gtag/js?id=G-V7C6VKX1M1&amp;cx=c&amp;gtm=457e5710za200&amp;tag_exp=101509157~103116026~103200004~103233427~103351869~103351871~104684208~104684211~104718208~104839054~104839056~104885889~104885891"></script><script type="text/javascript" async="" src="https://mc.yandex.ru/metrika/watch.js"></script><script type="text/javascript" async="" src="https://www.google-analytics.com/analytics.js"></script><script type="text/javascript" async="" src="https://www.googletagmanager.com/gtag/js?id=G-V7C6VKX1M1&amp;cx=c&amp;gtm=457e5710za200&amp;tag_exp=101509157~103116026~103200004~103233427~103351869~103351871~104573694~104684208~104684211~104718208~104839054~104839056~104885889~104885891"></script><script type="text/javascript" async="" src="https://mc.yandex.ru/metrika/watch.js"></script><script src="jscookmenu.min.js"></script>
+<link href="base/jquery-ui.min.css" rel="stylesheet">
+<link href="ChessBotWebsite.css" rel="stylesheet">
+<link href="next_best_move.css" rel="stylesheet">
+<script src="jquery-1.12.4.min.js"></script>
+<script src="jquery-ui.min.js"></script>
+<script src="wwb12.min.js"></script>
+<script>
+$(document).ready(function()
+{
+   var bProgressOptions =
+   {
+      value: 50
+   };
+   $("#bProgress").progressbar(bProgressOptions);
+   var bTimerOptions =
+   {
+      value: 1
+   };
+   $("#bTimer").progressbar(bTimerOptions);
+});
+</script>
+<link rel="stylesheet" href="css/chessboard-1.0.0.min.css">
+<link rel="stylesheet" href="style.css">
+<script src="js/chessboard-1.0.0.min.js"></script>
+<script src="js/chess.js"></script>
+<script src="stockfish.js"></script>
+<script src="stockfish.asm.js"></script>
+<link href="https://fonts.googleapis.com/css2?family=Fira+Sans&amp;display=swap" rel="stylesheet">
+<link type="text/css" rel="stylesheet" charset="UTF-8" href="https://www.gstatic.com/_/translate_http/_/ss/k=translate_http.tr.pgV-E-68K-A.L.W.O/am=AGA/d=0/rs=AN8SPfoc8hDWulOCIcFB3yTCWO1fC63bQw/m=el_main_css"><script type="text/javascript" src="stockfish.asm.js"></script><script type="text/javascript" src="stockfish.asm.js"></script><script type="text/javascript" src="stockfish.asm.js"></script><script type="text/javascript" src="stockfish.asm.js"></script></head>
+<body>
+<!-- Yandex.Metrika counter -->
+<script>
+    (function (d, w, c) {
+        (w[c] = w[c] || []).push(function() {
+            try {
+                w.yaCounter33492873 = new Ya.Metrika({
+                    id:33492873,
+                    clickmap:true,
+                    trackLinks:true,
+                    accurateTrackBounce:true,
+                    webvisor:true
+                });
+            } catch(e) { }
+        });
+
+        var n = d.getElementsByTagName("script")[0],
+            s = d.createElement("script"),
+            f = function () { n.parentNode.insertBefore(s, n); };
+        s.type = "text/javascript";
+        s.async = true;
+        s.src = "https://mc.yandex.ru/metrika/watch.js";
+
+        if (w.opera == "[object Opera]") {
+            d.addEventListener("DOMContentLoaded", f, false);
+        } else { f(); }
+    })(document, window, "yandex_metrika_callbacks");
+</script>
+<noscript><div><img src="https://mc.yandex.ru/watch/33492873" style="position:absolute; left:-9999px;" alt="" /></div></noscript>
+<!-- /Yandex.Metrika counter -->
+
+<!-- Global site tag (gtag.js) - Google Analytics -->
+<script async="" src="https://www.googletagmanager.com/gtag/js?id=UA-149406315-1"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'UA-149406315-1');
+</script>
+<div id="container">
+
+<div id="wb_Text2">
+<h1><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">Next Move Suggestion Tool</font></font></h1></div>
+<!-- Chess Board -->
+
+<div id="myBoard"><div class="chessboard-63f37"><div class="spare-pieces-7492f spare-pieces-top-4028b" style="padding-left: 51px;"><img src="img/chesspieces/wikipedia/bK.png" id="bK-ff31-d8b0-7fc1-1069-5134-161e-07a0-c942" alt="" class="piece-417db" data-piece="bK" style="width:49px;height:49px;"><img src="img/chesspieces/wikipedia/bQ.png" id="bQ-b316-59e3-5196-33c4-07cb-178f-3fe6-80a7" alt="" class="piece-417db" data-piece="bQ" style="width:49px;height:49px;"><img src="img/chesspieces/wikipedia/bR.png" id="bR-43f4-3136-f831-710c-8d26-7c2b-38e2-8341" alt="" class="piece-417db" data-piece="bR" style="width:49px;height:49px;"><img src="img/chesspieces/wikipedia/bB.png" id="bB-1e4b-0f4f-9994-737c-ba3b-e4e9-2728-a5d2" alt="" class="piece-417db" data-piece="bB" style="width:49px;height:49px;"><img src="img/chesspieces/wikipedia/bN.png" id="bN-6991-b57a-27ff-bd84-b77b-9715-d141-3d76" alt="" class="piece-417db" data-piece="bN" style="width:49px;height:49px;"><img src="img/chesspieces/wikipedia/bP.png" id="bP-0196-9297-dbe1-8da0-f42a-01a5-373c-dead" alt="" class="piece-417db" data-piece="bP" style="width:49px;height:49px;"></div><div class="board-b72b1" style="width: 392px;"><div class="row-5277c"><div class="square-55d63 white-1e1d7 square-a8" style="width:49px;height:49px;" id="a8-09e3-8f52-17e8-8fa8-bfcf-3416-69e6-b8e9" data-square="a8"><div class="notation-322f9 numeric-fc462">8</div><img src="img/chesspieces/wikipedia/bR.png" alt="" class="piece-417db" data-piece="bR" style="width:49px;height:49px;"></div><div class="square-55d63 black-3c85d square-b8" style="width:49px;height:49px;" id="b8-3854-981d-2f67-2125-2c96-7aa4-d044-c371" data-square="b8"><img src="img/chesspieces/wikipedia/bN.png" alt="" class="piece-417db" data-piece="bN" style="width:49px;height:49px;"></div><div class="square-55d63 white-1e1d7 square-c8" style="width:49px;height:49px;" id="c8-94b2-6509-38b2-9589-119e-8c91-cc3b-f9ac" data-square="c8"><img src="img/chesspieces/wikipedia/bB.png" alt="" class="piece-417db" data-piece="bB" style="width:49px;height:49px;"></div><div class="square-55d63 black-3c85d square-d8" style="width:49px;height:49px;" id="d8-317b-e572-5333-7c65-395a-0492-80fb-9d24" data-square="d8"><img src="img/chesspieces/wikipedia/bQ.png" alt="" class="piece-417db" data-piece="bQ" style="width:49px;height:49px;"></div><div class="square-55d63 white-1e1d7 square-e8" style="width:49px;height:49px;" id="e8-3d07-383c-1053-25a4-43b6-a7a7-73a5-c5b9" data-square="e8"><img src="img/chesspieces/wikipedia/bK.png" alt="" class="piece-417db" data-piece="bK" style="width:49px;height:49px;"></div><div class="square-55d63 black-3c85d square-f8" style="width:49px;height:49px;" id="f8-d252-9ce6-dd0c-0d93-5fee-84ba-9160-6378" data-square="f8"><img src="img/chesspieces/wikipedia/bB.png" alt="" class="piece-417db" data-piece="bB" style="width:49px;height:49px;"></div><div class="square-55d63 white-1e1d7 square-g8" style="width:49px;height:49px;" id="g8-b551-a7de-ece1-1352-0173-f8d1-0fa9-0008" data-square="g8"><img src="img/chesspieces/wikipedia/bN.png" alt="" class="piece-417db" data-piece="bN" style="width:49px;height:49px;"></div><div class="square-55d63 black-3c85d square-h8" style="width:49px;height:49px;" id="h8-967c-8feb-79c1-b792-1ec7-7ec2-c739-b0f3" data-square="h8"><img src="img/chesspieces/wikipedia/bR.png" alt="" class="piece-417db" data-piece="bR" style="width:49px;height:49px;"></div><div class="clearfix-7da63"></div></div><div class="row-5277c"><div class="square-55d63 black-3c85d square-a7" style="width:49px;height:49px;" id="a7-4482-91d1-c458-05ea-146e-669e-5a81-0236" data-square="a7"><div class="notation-322f9 numeric-fc462">7</div><img src="img/chesspieces/wikipedia/bP.png" alt="" class="piece-417db" data-piece="bP" style="width:49px;height:49px;"></div><div class="square-55d63 white-1e1d7 square-b7" style="width:49px;height:49px;" id="b7-1a7d-c1c8-122a-177c-3c51-c2a8-365c-fad7" data-square="b7"><img src="img/chesspieces/wikipedia/bP.png" alt="" class="piece-417db" data-piece="bP" style="width:49px;height:49px;"></div><div class="square-55d63 black-3c85d square-c7" style="width:49px;height:49px;" id="c7-a97f-3685-2739-b681-f686-7ca0-4358-2c2a" data-square="c7"><img src="img/chesspieces/wikipedia/bP.png" alt="" class="piece-417db" data-piece="bP" style="width:49px;height:49px;"></div><div class="square-55d63 white-1e1d7 square-d7" style="width:49px;height:49px;" id="d7-9d4c-0e75-d8b5-866a-919a-ccc3-e69e-4a77" data-square="d7"><img src="img/chesspieces/wikipedia/bP.png" alt="" class="piece-417db" data-piece="bP" style="width:49px;height:49px;"></div><div class="square-55d63 black-3c85d square-e7" style="width:49px;height:49px;" id="e7-322f-6f4b-b0d4-54f6-0420-3473-ce50-0137" data-square="e7"><img src="img/chesspieces/wikipedia/bP.png" alt="" class="piece-417db" data-piece="bP" style="width:49px;height:49px;"></div><div class="square-55d63 white-1e1d7 square-f7" style="width:49px;height:49px;" id="f7-fed3-2ae7-c97c-b7ce-38c7-c407-4cc1-83a1" data-square="f7"><img src="img/chesspieces/wikipedia/bP.png" alt="" class="piece-417db" data-piece="bP" style="width:49px;height:49px;"></div><div class="square-55d63 black-3c85d square-g7" style="width:49px;height:49px;" id="g7-4a5e-371d-4c26-9ec6-b257-5253-8085-3af7" data-square="g7"><img src="img/chesspieces/wikipedia/bP.png" alt="" class="piece-417db" data-piece="bP" style="width:49px;height:49px;"></div><div class="square-55d63 white-1e1d7 square-h7" style="width:49px;height:49px;" id="h7-fa48-3dcb-236d-d867-c67c-c665-d0b7-1cbe" data-square="h7"><img src="img/chesspieces/wikipedia/bP.png" alt="" class="piece-417db" data-piece="bP" style="width:49px;height:49px;"></div><div class="clearfix-7da63"></div></div><div class="row-5277c"><div class="square-55d63 white-1e1d7 square-a6" style="width:49px;height:49px;" id="a6-c79e-9f3b-4928-d17b-2957-27f5-6aa5-f584" data-square="a6"><div class="notation-322f9 numeric-fc462">6</div></div><div class="square-55d63 black-3c85d square-b6" style="width:49px;height:49px;" id="b6-afb0-aad9-3b3a-748d-e392-a330-8c44-a4bc" data-square="b6"></div><div class="square-55d63 white-1e1d7 square-c6" style="width:49px;height:49px;" id="c6-c42f-ca96-f81a-3cc5-b09f-1a4e-2f0f-111d" data-square="c6"></div><div class="square-55d63 black-3c85d square-d6" style="width:49px;height:49px;" id="d6-1094-f5b4-a39e-ea95-2843-3e24-cdb7-3d08" data-square="d6"></div><div class="square-55d63 white-1e1d7 square-e6" style="width:49px;height:49px;" id="e6-4087-8646-86f1-49e9-e84c-69ea-846d-7f26" data-square="e6"></div><div class="square-55d63 black-3c85d square-f6" style="width:49px;height:49px;" id="f6-1a12-b3dd-ce21-cbf2-7464-614a-56ca-9367" data-square="f6"></div><div class="square-55d63 white-1e1d7 square-g6" style="width:49px;height:49px;" id="g6-c619-5fcf-e00b-65fb-d4ce-68b2-d824-2600" data-square="g6"></div><div class="square-55d63 black-3c85d square-h6" style="width:49px;height:49px;" id="h6-7f49-1d73-8afe-45f7-f34d-79be-d3fc-21f2" data-square="h6"></div><div class="clearfix-7da63"></div></div><div class="row-5277c"><div class="square-55d63 black-3c85d square-a5" style="width:49px;height:49px;" id="a5-096e-41fc-947f-f3f9-6145-4efd-c490-d0b4" data-square="a5"><div class="notation-322f9 numeric-fc462">5</div></div><div class="square-55d63 white-1e1d7 square-b5" style="width:49px;height:49px;" id="b5-b4a2-8fc4-5a08-e007-37ae-c168-ea7f-b116" data-square="b5"></div><div class="square-55d63 black-3c85d square-c5" style="width:49px;height:49px;" id="c5-efb5-9902-aac7-e1ef-1124-1a7f-aca8-0a5c" data-square="c5"></div><div class="square-55d63 white-1e1d7 square-d5" style="width:49px;height:49px;" id="d5-52b2-8689-e7f7-b6e9-90e9-f7ae-f9e4-46e9" data-square="d5"></div><div class="square-55d63 black-3c85d square-e5" style="width:49px;height:49px;" id="e5-f4ec-637f-1a48-89d4-4463-f199-85da-bac3" data-square="e5"></div><div class="square-55d63 white-1e1d7 square-f5" style="width:49px;height:49px;" id="f5-1faf-2176-9f3f-9607-7582-05f6-88d6-949e" data-square="f5"></div><div class="square-55d63 black-3c85d square-g5" style="width:49px;height:49px;" id="g5-3c13-5c60-d55c-09f6-f16d-cb56-36d1-e5be" data-square="g5"></div><div class="square-55d63 white-1e1d7 square-h5" style="width:49px;height:49px;" id="h5-8b12-5ed5-89fd-479b-c98b-5128-8703-9e84" data-square="h5"></div><div class="clearfix-7da63"></div></div><div class="row-5277c"><div class="square-55d63 white-1e1d7 square-a4" style="width:49px;height:49px;" id="a4-ccc6-b88a-96a9-0231-daab-6db7-6721-7678" data-square="a4"><div class="notation-322f9 numeric-fc462">4</div></div><div class="square-55d63 black-3c85d square-b4" style="width:49px;height:49px;" id="b4-2421-786e-ccc6-5e70-48b9-309c-9300-ca02" data-square="b4"></div><div class="square-55d63 white-1e1d7 square-c4" style="width:49px;height:49px;" id="c4-5bfc-c412-f1e6-260b-0325-03df-9e4d-c645" data-square="c4"></div><div class="square-55d63 black-3c85d square-d4" style="width:49px;height:49px;" id="d4-55bd-2f04-2401-9d1f-62e6-5185-7639-e11f" data-square="d4"></div><div class="square-55d63 white-1e1d7 square-e4" style="width:49px;height:49px;" id="e4-f595-7e31-a8b2-c285-efd2-0e67-fbe9-c146" data-square="e4"></div><div class="square-55d63 black-3c85d square-f4" style="width:49px;height:49px;" id="f4-1d49-07ad-0332-2e37-145e-e679-2acd-6a53" data-square="f4"></div><div class="square-55d63 white-1e1d7 square-g4" style="width:49px;height:49px;" id="g4-4137-9948-887b-1f0b-d455-7f8c-3544-7227" data-square="g4"></div><div class="square-55d63 black-3c85d square-h4" style="width:49px;height:49px;" id="h4-1613-0326-c630-4c79-e791-32e0-b32c-fae3" data-square="h4"></div><div class="clearfix-7da63"></div></div><div class="row-5277c"><div class="square-55d63 black-3c85d square-a3" style="width:49px;height:49px;" id="a3-5d27-254b-7075-8dc3-09bd-ab80-ea1d-d99e" data-square="a3"><div class="notation-322f9 numeric-fc462">3</div></div><div class="square-55d63 white-1e1d7 square-b3" style="width:49px;height:49px;" id="b3-f548-b491-770a-06e6-077c-ec70-05d7-b430" data-square="b3"></div><div class="square-55d63 black-3c85d square-c3" style="width:49px;height:49px;" id="c3-73a2-a9d7-64e1-73cc-914c-93b9-7149-8ba6" data-square="c3"></div><div class="square-55d63 white-1e1d7 square-d3" style="width:49px;height:49px;" id="d3-a17f-a2b6-5b6d-5d18-6d84-b7a3-2795-5ffc" data-square="d3"></div><div class="square-55d63 black-3c85d square-e3" style="width:49px;height:49px;" id="e3-c4dd-ccd3-0ef0-2a7c-200d-cdc1-6ef6-6c3e" data-square="e3"></div><div class="square-55d63 white-1e1d7 square-f3" style="width:49px;height:49px;" id="f3-c44b-ac2d-7ddf-138f-83c2-d771-4173-0347" data-square="f3"></div><div class="square-55d63 black-3c85d square-g3" style="width:49px;height:49px;" id="g3-f6b2-8f4e-1eb4-12b4-0710-e9f8-da91-3ad6" data-square="g3"></div><div class="square-55d63 white-1e1d7 square-h3" style="width:49px;height:49px;" id="h3-609a-1087-6bfa-df00-fd04-2c31-80f2-af30" data-square="h3"></div><div class="clearfix-7da63"></div></div><div class="row-5277c"><div class="square-55d63 white-1e1d7 square-a2" style="width:49px;height:49px;" id="a2-0e2d-e9b5-5c3f-db4c-0cd7-e564-23fa-c121" data-square="a2"><div class="notation-322f9 numeric-fc462">2</div><img src="img/chesspieces/wikipedia/wP.png" alt="" class="piece-417db" data-piece="wP" style="width:49px;height:49px;"></div><div class="square-55d63 black-3c85d square-b2" style="width:49px;height:49px;" id="b2-5067-c785-73bc-1aa0-5660-380e-de5c-8a0a" data-square="b2"><img src="img/chesspieces/wikipedia/wP.png" alt="" class="piece-417db" data-piece="wP" style="width:49px;height:49px;"></div><div class="square-55d63 white-1e1d7 square-c2" style="width:49px;height:49px;" id="c2-09ec-ff5d-e546-7822-e96f-be4e-1bf3-3d1a" data-square="c2"><img src="img/chesspieces/wikipedia/wP.png" alt="" class="piece-417db" data-piece="wP" style="width:49px;height:49px;"></div><div class="square-55d63 black-3c85d square-d2" style="width:49px;height:49px;" id="d2-67dc-d3a4-b542-e4a5-746f-44bf-f6cb-b328" data-square="d2"><img src="img/chesspieces/wikipedia/wP.png" alt="" class="piece-417db" data-piece="wP" style="width:49px;height:49px;"></div><div class="square-55d63 white-1e1d7 square-e2" style="width:49px;height:49px;" id="e2-8cbc-fdc1-0322-26a7-f501-3710-0531-bf8d" data-square="e2"><img src="img/chesspieces/wikipedia/wP.png" alt="" class="piece-417db" data-piece="wP" style="width:49px;height:49px;"></div><div class="square-55d63 black-3c85d square-f2" style="width:49px;height:49px;" id="f2-2e82-1999-0ab2-d1fb-b668-c45e-5171-6880" data-square="f2"><img src="img/chesspieces/wikipedia/wP.png" alt="" class="piece-417db" data-piece="wP" style="width:49px;height:49px;"></div><div class="square-55d63 white-1e1d7 square-g2" style="width:49px;height:49px;" id="g2-d3c0-4a93-6524-9a39-010a-cf65-095d-8f50" data-square="g2"><img src="img/chesspieces/wikipedia/wP.png" alt="" class="piece-417db" data-piece="wP" style="width:49px;height:49px;"></div><div class="square-55d63 black-3c85d square-h2" style="width:49px;height:49px;" id="h2-93ff-5227-bb3e-f34b-147c-b367-748e-f172" data-square="h2"><img src="img/chesspieces/wikipedia/wP.png" alt="" class="piece-417db" data-piece="wP" style="width:49px;height:49px;"></div><div class="clearfix-7da63"></div></div><div class="row-5277c"><div class="square-55d63 black-3c85d square-a1" style="width:49px;height:49px;" id="a1-957f-1c2c-5ee7-30f5-191c-3af9-b7ea-524b" data-square="a1"><div class="notation-322f9 alpha-d2270">a</div><div class="notation-322f9 numeric-fc462">1</div><img src="img/chesspieces/wikipedia/wR.png" alt="" class="piece-417db" data-piece="wR" style="width:49px;height:49px;"></div><div class="square-55d63 white-1e1d7 square-b1" style="width:49px;height:49px;" id="b1-2ab6-01ca-ea62-c095-9dab-499f-0edf-bbed" data-square="b1"><div class="notation-322f9 alpha-d2270">b</div><img src="img/chesspieces/wikipedia/wN.png" alt="" class="piece-417db" data-piece="wN" style="width:49px;height:49px;"></div><div class="square-55d63 black-3c85d square-c1" style="width:49px;height:49px;" id="c1-4186-dff8-046d-4d21-52a4-8b0d-467c-d08c" data-square="c1"><div class="notation-322f9 alpha-d2270">c</div><img src="img/chesspieces/wikipedia/wB.png" alt="" class="piece-417db" data-piece="wB" style="width:49px;height:49px;"></div><div class="square-55d63 white-1e1d7 square-d1" style="width:49px;height:49px;" id="d1-3f3a-37ff-410d-9028-1afa-c2d3-aeb7-4100" data-square="d1"><div class="notation-322f9 alpha-d2270">d</div><img src="img/chesspieces/wikipedia/wQ.png" alt="" class="piece-417db" data-piece="wQ" style="width:49px;height:49px;"></div><div class="square-55d63 black-3c85d square-e1" style="width:49px;height:49px;" id="e1-738e-9c41-8561-d91d-e94e-1fab-8326-c803" data-square="e1"><div class="notation-322f9 alpha-d2270">e</div><img src="img/chesspieces/wikipedia/wK.png" alt="" class="piece-417db" data-piece="wK" style="width:49px;height:49px;"></div><div class="square-55d63 white-1e1d7 square-f1" style="width:49px;height:49px;" id="f1-00ec-fcc9-d6fd-d430-9059-4a34-41fe-63aa" data-square="f1"><div class="notation-322f9 alpha-d2270">f</div><img src="img/chesspieces/wikipedia/wB.png" alt="" class="piece-417db" data-piece="wB" style="width:49px;height:49px;"></div><div class="square-55d63 black-3c85d square-g1" style="width:49px;height:49px;" id="g1-acd7-0c7a-18a2-0240-4869-79a9-16c3-76c0" data-square="g1"><div class="notation-322f9 alpha-d2270">g</div><img src="img/chesspieces/wikipedia/wN.png" alt="" class="piece-417db" data-piece="wN" style="width:49px;height:49px;"></div><div class="square-55d63 white-1e1d7 square-h1" style="width:49px;height:49px;" id="h1-a38e-f206-4cb3-3719-7ddd-551a-99b6-efd0" data-square="h1"><div class="notation-322f9 alpha-d2270">h</div><img src="img/chesspieces/wikipedia/wR.png" alt="" class="piece-417db" data-piece="wR" style="width:49px;height:49px;"></div><div class="clearfix-7da63"></div></div></div><div class="spare-pieces-7492f spare-pieces-bottom-ae20f" style="padding-left: 51px;"><img src="img/chesspieces/wikipedia/wK.png" id="wK-63a7-edc9-b282-6ad4-22ce-74ef-c52f-1f36" alt="" class="piece-417db" data-piece="wK" style="width:49px;height:49px;"><img src="img/chesspieces/wikipedia/wQ.png" id="wQ-0200-ba61-5aa7-2867-e1c6-9e17-6813-8169" alt="" class="piece-417db" data-piece="wQ" style="width:49px;height:49px;"><img src="img/chesspieces/wikipedia/wR.png" id="wR-772d-7f0a-5025-ad55-054c-e5dc-6753-47b3" alt="" class="piece-417db" data-piece="wR" style="width:49px;height:49px;"><img src="img/chesspieces/wikipedia/wB.png" id="wB-48c6-faba-fab7-2b12-f69c-d36f-cc74-d490" alt="" class="piece-417db" data-piece="wB" style="width:49px;height:49px;"><img src="img/chesspieces/wikipedia/wN.png" id="wN-1b47-0b04-2046-b13b-32c6-a374-1d76-3bf9" alt="" class="piece-417db" data-piece="wN" style="width:49px;height:49px;"><img src="img/chesspieces/wikipedia/wP.png" id="wP-abc6-fc8e-a84a-496c-b556-29a9-d7b9-6d62" alt="" class="piece-417db" data-piece="wP" style="width:49px;height:49px;"></div></div></div>
+
+<script>
+(function( $ ) {
+    $.fn.animate_progressbar = function(value,duration,easing,complete) {
+        if (value == null)value = 0;
+        if (duration == null)duration = 1000;
+        if (easing == null)easing = 'swing';
+        if (complete == null)complete = function(){};
+        var progress = this.find('.ui-progressbar-value');
+        progress.stop(true).animate({
+            width: value + '%'
+        },duration,easing,function(){
+            if(value>=99.5){
+                progress.addClass('ui-corner-right');
+            } else {
+                progress.removeClass('ui-corner-right');
+            }
+            complete();
+        });
+    }
+})( jQuery );
+
+var board = null
+var $board = $('#myBoard')
+var $fen = $('#fen')
+var squareClass = 'square-55d63'
+var cur_prog;
+var chess = new Chess()
+
+function SetProgress (progress) {
+
+cur_prog = progress;
+
+$('#bProgress').animate_progressbar(progress);
+
+}
+
+function DoTimer(val,time) {
+
+$('#bTimer').animate_progressbar(val,time);
+
+}
+
+function removeHighlights () {
+
+  $board.find('.' + squareClass).removeClass('highlight-from');
+  $board.find('.' + squareClass).removeClass('highlight-to');
+}
+
+function SideToMove () {
+
+var Side = ' w';
+var radioValue = $("input[name='rSide']:checked"). val();
+if (radioValue == 1) { Side = ' w' }; 
+if (radioValue == 2) { Side = ' b' };
+
+var Castling = '';
+
+if ($('#cWK').prop('checked')) {Castling = Castling + 'K'};
+if ($('#cWQ').prop('checked')) {Castling = Castling + 'Q'};
+if ($('#cBK').prop('checked')) {Castling = Castling + 'k'};
+if ($('#cBQ').prop('checked')) {Castling = Castling + 'q'};
+
+if (Castling != "")
+{
+return Side + ' ' + Castling;
+} else
+{
+return Side + ' - ';
+}
+
+}
+
+function updateStatus () {
+
+  $('input[name=fen]').val(board.fen() + SideToMove());
+  
+  removeHighlights();
+  
+  chess.load(board.fen() + SideToMove() + ' - 0 1');
+  
+}
+
+function ClearBoxes ()
+{
+
+ $("#bBest").val("");
+ $("#bScore").val("");
+ $("#bDepth").val("");
+ $("#bPV").val("");
+ 
+}
+
+function preventScroll(e) {
+    e.preventDefault();
+    e.stopPropagation();
+}
+
+function onDrop (source, target, piece, newPos, oldPos, orientation) {
+
+   if (piece == "wR" && source == "h1") {$('#cWK').prop('checked',false);}
+   if (piece == "wR" && source == "a1") {$('#cWQ').prop('checked',false);}
+   if (piece == "bR" && source == "h8") {$('#cBK').prop('checked',false);}
+   if (piece == "bR" && source == "a8") {$('#cBQ').prop('checked',false);}
+   
+   if (piece == "wK") 
+   {
+   
+   var h1 = chess.get('h1');
+   var a1 = chess.get('a1');
+   
+   $('#cWK').prop('checked',false);
+   $('#cWQ').prop('checked',false);
+   
+   if (source == 'e1' && target == 'g1' && h1.type == 'r' && h1.color == 'w' ) {board.move('h1-f1')}
+   if (source == 'e1' && target == 'c1' && a1.type == 'r' && a1.color == 'w' ) {board.move('a1-d1')}
+   
+   }
+   
+   if (piece == "bK") 
+   {
+   
+   var h8 = chess.get('h8');
+   var a8 = chess.get('a8');
+   
+   $('#cBK').prop('checked',false);
+   $('#cBQ').prop('checked',false);
+   
+   if (source == 'e8' && target == 'g8' && h8.type == 'r' && h8.color == 'b' ) {board.move('h8-f8')}
+   if (source == 'e8' && target == 'c8' && a8.type == 'r' && a8.color == 'b' ) {board.move('a8-d8')}
+   
+   }
+   
+
+   var col = piece.substr(0,1);
+   
+   if (target != "offboard") {
+   if (col == "w") { $('#rBlack').prop('checked',true) } else
+   { $('#rWhite').prop('checked',true) };
+   }
+   
+   $('input[name=fen]').val(Chessboard.objToFen(newPos)+ SideToMove());
+
+   removeHighlights();
+
+   chess.load(Chessboard.objToFen(newPos) + SideToMove() + ' - 0 1');
+   
+   document.removeEventListener('touchmove', preventScroll);
+}
+
+
+
+function onDragStart (source, piece, position, orientation) {
+
+document.addEventListener('touchmove', preventScroll, { passive: false });
+
+return true;
+
+}
+
+
+
+
+function onMoveEnd (oldPos, newPos) {
+
+$('input[name=fen]').val(Chessboard.objToFen(newPos)+ SideToMove())
+
+removeHighlights()
+
+}
+
+function onMouseoverSquare (square, piece, boardPos, orientation) {
+
+   if (piece == "wP" && square.substr(1,1) == '8')
+   {
+   
+   boardPos[square] = "wQ";
+   board.position(Chessboard.objToFen(boardPos),false);
+   $('input[name=fen]').val(Chessboard.objToFen(boardPos)+ SideToMove());
+   chess.load(Chessboard.objToFen(boardPos) + SideToMove() + ' - 0 1');
+   updateStatus();
+
+   }
+
+   if (piece == "bP" && square.substr(1,1) == '1')
+   {
+   
+   boardPos[square] = "bQ";
+   board.position(Chessboard.objToFen(boardPos),false);
+   $('input[name=fen]').val(Chessboard.objToFen(boardPos)+ SideToMove());
+   chess.load(Chessboard.objToFen(boardPos) + SideToMove() + ' - 0 1');
+   updateStatus();
+
+   }
+
+}
+
+var config = {
+  draggable: true,
+  position: 'start',
+  dropOffBoard: 'trash',
+  onDrop: onDrop,
+  onMoveEnd: onMoveEnd,
+  onDragStart: onDragStart,
+  sparePieces: true,
+  onMouseoverSquare: onMouseoverSquare
+}
+board = Chessboard('myBoard', config)
+
+updateStatus();
+
+function ChangeTerm () {
+
+if (board.orientation() == "white") {
+
+$('#bProgress .ui-widget-header').css('background-color','#FFFFFF');
+
+$('#bProgress, ui-widget-content').css('background-color','#333333');
+
+
+} else
+
+{
+
+$('#bProgress .ui-widget-header').css('background-color','#333333');
+
+$('#bProgress, ui-widget-content').css('background-color','#FFFFFF');
+
+}
+
+}
+
+
+
+// stockfish
+
+var wait_for_script;
+
+      
+      /// We can load Stockfish.js via Web Workers or directly via a <script> tag.
+      /// Web Workers are better since they don't block the UI, but they are not always avaiable.
+      (function fix_workers()
+      {
+        var script_tag;
+        /// Does the environment support web workers?  If not, include stockfish.js directly.
+        ///NOTE: Since web workers don't work when a page is loaded from the local system, we have to fake it there too. (Take that security measures!)
+        if (!Worker || (location && location.protocol === "file:")) {
+          var script_tag  = document.createElement("script");
+          script_tag.type ="text/javascript";
+          script_tag.src  = "stockfish.asm.js";
+          script_tag.onload = init;
+          document.getElementsByTagName("head")[0].appendChild(script_tag);
+          wait_for_script = true;
+          setTimeout(function ()
+          {
+            ///console.warn("Loading this example from the file: protocol will load the slower asm.js engine.\nRun server.js and then load http://localhost:8080/ for the WASM engine.");
+          }, 3000);
+        }
+      }());
+      
+      function init()
+      {
+
+
+       var evaler = typeof STOCKFISH === "function" ? STOCKFISH() : new Worker(options.stockfishjs || 'stockfish.js');
+
+       evaler.onmessage = function(event) {
+        var line;
+        
+        if (event && typeof event === "object") {
+            line = event.data;
+        } else {
+            line = event;
+        }
+        
+        console.log("evaler: " + line);
+        
+        /// ------- show score -------- ///
+        
+        var cp_index = line.indexOf("cp");
+        var nodes_index = line.indexOf("nodes");
+        var upper_index = line.indexOf("upperbound");
+        var mate_index = line.indexOf("mate");
+        if (cp_index >= 0 || mate_index >= 0)
+        {
+        
+        if (upper_index >= 0) {var score = line.substr(cp_index+3,upper_index-cp_index-3);} else {
+        var score = line.substr(cp_index+3,nodes_index-cp_index-3); }
+        
+        /// check if mate  
+        
+        if (mate_index >= 0) 
+        {
+        
+         var moves_to_mate = line.substr(mate_index+5,nodes_index-mate_index-5);
+         if ($("input[name='rSide']:checked"). val() == 2) 
+         {
+          moves_to_mate = -moves_to_mate;
+         }
+
+         if (moves_to_mate > 0) {$("#bScore").val("+M"+Math.abs(moves_to_mate));  if (board.orientation() == "white") {SetProgress(100)} else {SetProgress(0.1)} };
+         if (moves_to_mate == 0) {$("#bScore").val("M0"); SetProgress(50)};
+         if (moves_to_mate < 0) {$("#bScore").val("-M"+Math.abs(moves_to_mate)); if (board.orientation() == "white") {SetProgress(0.1)} else {SetProgress(100)}};
+        
+        }
+        else
+        {
+        
+        if ($("input[name='rSide']:checked"). val() == 2) 
+        {
+         score = -score;
+        }
+        
+        score = score / 100;
+        
+        if (board.orientation() == "white") {
+        SetProgress(50 + score*5); } else
+        { SetProgress(50 - score*5); }
+       
+        if (score > 0) {$("#bScore").val("+"+score)} else {$("#bScore").val(score)};
+        
+        }
+        }
+        
+        /// ------- end of show score -------- ///
+        
+        
+        /// -------- show depth --------- ///
+        
+        
+        var depth_index = line.indexOf("depth");
+        var seldepth_index = line.indexOf("seldepth");
+        if (depth_index >= 0)
+        {
+        
+        var depth = line.substr(depth_index+6,seldepth_index-depth_index-6);
+        
+        $("#bDepth").val(depth);
+        
+        }
+        
+        /// -------- end of show depth --------- ///
+        
+        /// -------- show PV --------- ///
+        var bmc_index = line.indexOf("bmc");
+        var multipv_index = line.indexOf("multipv");
+        var multipv;
+        
+        if (multipv_index >= 0) {
+        
+        multipv = line.substr(multipv_index+8,bmc_index-multipv_index-8);
+        
+        bmc_index = multipv.indexOf("bmc");
+        
+        var pv_index = multipv.indexOf("pv");
+        
+        if (pv_index >= 0)
+        {
+        
+        var pv = multipv.substr(pv_index+3,multipv.length-3);
+        
+        $("#bPV").val(pv);
+        
+        }
+        }
+        /// -------- end of showing PV --------- ///
+        
+	    var res = line.substr(0, 8);       
+        
+        if (res === "bestmove") {
+
+	    var bestmove = line.substr(9,4); 
+	    var out = [bestmove.slice(0, 2), "-", bestmove.slice(2)].join('');
+	   
+	    ///console.log(out); 
+	    if (out != "(n-on") {
+	    $("#bBest").val(out);
+	    } else
+	    {$("#bBest").val("-");}
+	    
+	    if ($("#bBest").val() != "") 
+	    {
+	    $("#bCalc").prop("disabled",false);
+        $("#bCalc").prop("value","Calculate position");
+        DoTimer(0.1,1);
+	    }
+	    
+        var Mode = $("input[name='rMode']:checked"). val();
+        if (Mode == 1) { 
+        
+        if (!chess.game_over())
+        {
+        removeHighlights();
+        $board.find('.square-' + bestmove.slice(0, 2)).addClass('highlight-from');
+        $board.find('.square-' + bestmove.slice(2)).addClass('highlight-to');
+        }
+        }; 
+        
+        if (Mode == 2) { 
+        
+        var h1 = chess.get('h1');
+        var a1 = chess.get('a1');
+        var h8 = chess.get('h8');
+	    var a8 = chess.get('a8');
+        var e1 = chess.get('e1'); 
+        var e8 = chess.get('e8');
+
+        if (out == "e1-g1" && e1.type == "k" && e1.color == "w" && h1.type == "r" && h1.color == "w")  {board.move("h1-f1");}
+        if (out == "e1-c1" && e1.type == "k" && e1.color == "w" && a1.type == "r" && a1.color == "w")  {board.move("a1-d1");}
+        if (out == "e8-g8" && e8.type == "k" && e8.color == "b" && h8.type == "r" && h8.color == "b")  {board.move("h8-f8");}
+        if (out == "e8-c8" && e8.type == "k" && e8.color == "b" && a8.type == "r" && a8.color == "b")  {board.move("a8-d8");}
+        
+        var figure = chess.get(out.substr(0,2));
+        
+        if (figure.type == "r" && figure.color == "w" && out.substr(0,2) == "h1")
+        {      
+        $('#cWK').prop('checked',false);
+        }
+        
+        if (figure.type == "r" && figure.color == "w" && out.substr(0,2) == "a1")
+        {      
+        $('#cWQ').prop('checked',false);
+        }
+        
+        if (figure.type == "r" && figure.color == "b" && out.substr(0,2) == "h8")
+        {      
+        $('#cBK').prop('checked',false);
+        }
+        
+        if (figure.type == "r" && figure.color == "b" && out.substr(0,2) == "a8")
+        {      
+        $('#cBQ').prop('checked',false);
+        }
+        
+        if (figure.type == "k" && figure.color == "w")
+        {      
+        $('#cWK').prop('checked',false);
+        $('#cWQ').prop('checked',false);
+        }
+        
+        if (figure.type == "k" && figure.color == "b")
+        {      
+        $('#cBK').prop('checked',false);
+        $('#cBQ').prop('checked',false);
+        }       
+        
+        if (figure.type == "p" && figure.color == "w" && out.substr(1,1) == "7") 
+        {
+        var CurrPos = Chessboard.fenToObj(board.fen());
+        CurrPos[out.substr(0,2)] = "wQ";
+        board.position(Chessboard.objToFen(CurrPos),false); 
+        }
+        
+        if (figure.type == "p" && figure.color == "b" && out.substr(1,1) == "2") 
+        {
+        var CurrPos = Chessboard.fenToObj(board.fen());
+        CurrPos[out.substr(0,2)] = "bQ";
+        board.position(Chessboard.objToFen(CurrPos),false); 
+        }
+         
+        board.move(out);
+        
+        var radioValue = $("input[name='rSide']:checked").val();
+        if (radioValue == 1) { $('#rBlack').prop('checked',true) } else
+        { $('#rWhite').prop('checked',true) };
+           
+           
+        updateStatus();     
+        
+        }; 
+	    
+	    
+	    
+	    
+	    
+
+	};
+        
+
+    }
+       
+$('#bCalc').on('click', function () {
+
+
+ removeHighlights();
+ $("#bBest").val("");
+
+if (!chess.game_over())
+{
+
+ $("#bCalc").prop("disabled",true);
+ $("#bCalc").prop("value","Thinking...");
+
+evaler.postMessage("setoption name Hash value 256");
+evaler.postMessage("position fen " + $('#fen'). val()); 
+evaler.postMessage("go movetime " + $("#bTime").val()*1000);
+DoTimer(100,$("#bTime").val()*1000);
+}
+  });
+
+      }
+      
+      /// If we load Stockfish.js via a <script> tag, we need to wait until it loads.
+    ///  if (!wait_for_script) {
+        document.addEventListener("DOMContentLoaded", init);
+    ///  }
+
+
+</script>
+<input type="text" id="fen" name="fen" value="rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq" spellcheck="false">
+<font style="vertical-align: inherit;"></font>
+<font style="vertical-align: inherit;"><font style="vertical-align: inherit;"><input type="button" id="bClear" onmouseenter="SetStyle('bClear', 'button_hover');return false;" onmouseleave="SetStyle('bClear', 'button_normal');return false;" onmousedown="SetStyle('bClear', 'button_down');return false;" onmouseup="SetStyle('bClear', 'button_hover');return false;" name="bClear" value="Clear" class="button_normal"></font></font>
+<font style="vertical-align: inherit;"><font style="vertical-align: inherit;"><input type="button" id="bStart" onmouseenter="SetStyle('bStart', 'button_hover');return false;" onmouseleave="SetStyle('bStart', 'button_normal');return false;" onmousedown="SetStyle('bStart', 'button_down');return false;" onmouseup="SetStyle('bStart', 'button_hover');return false;" name="bStart" value="Start Pos" class="button_normal"></font><font style="vertical-align: inherit;"><input type="button" id="bSetPos" onmouseenter="SetStyle('bSetPos', 'button_hover');return false;" onmouseleave="SetStyle('bSetPos', 'button_normal');return false;" onmousedown="SetStyle('bSetPos', 'button_down');return false;" onmouseup="SetStyle('bSetPos', 'button_hover');return false;" name="bSetPos" value="Set FEN" class="button_normal"></font></font>
+<div id="wb_Text3">
+<h6 class="Text_BIG"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">FEN:</font></font></h6></div>
+<font style="vertical-align: inherit;"><font style="vertical-align: inherit;"><input type="button" id="bCalc" onmouseenter="SetStyle('bCalc', 'button_green_hover');return false;" onmouseleave="SetStyle('bCalc', 'button_green');return false;" onmousedown="SetStyle('bCalc', 'button_green_down');return false;" onmouseup="SetStyle('bCalc', 'button_green_hover');return false;" name="bCalc" value="Calculate position" class="button_green"></font></font>
+<div id="wb_Shape1">
+<img src="images/img0142.png" id="Shape1" alt=""></div>
+<div id="wb_rWhite">
+<input type="radio" id="rWhite" name="rSide" value="1" checked=""><label for="rWhite"></label></div>
+<div id="wb_Text4">
+<span style="color:#FFFFFF;font-family:'Trebuchet MS';font-size:16px;"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">White to move</font></font></span></div>
+<div id="wb_Text5">
+<span style="color:#FFFFFF;font-family:'Trebuchet MS';font-size:16px;"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">Black to move</font></font></span></div>
+<div id="wb_rBlack">
+<input type="radio" id="rBlack" name="rSide" value="2"><label for="rBlack"></label></div>
+<div id="wb_Shape2">
+<img src="images/img0143.png" id="Shape2" alt=""></div>
+<div id="wb_cWK">
+<input type="checkbox" id="cWK" name="cWK" value="on" checked=""><label for="cWK"></label></div>
+<div id="wb_Text7">
+<span style="color:#FFFFFF;font-family:'Trebuchet MS';font-size:16px;"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">White O-O</font></font></span></div>
+<div id="wb_Text8">
+<span style="color:#FFFFFF;font-family:'Trebuchet MS';font-size:16px;"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">Black O-O</font></font></span></div>
+<div id="wb_cBK">
+<input type="checkbox" id="cBK" name="cBK" value="on" checked=""><label for="cBK"></label></div>
+<div id="wb_Text6">
+<span style="color:#FFFFFF;font-family:'Trebuchet MS';font-size:16px;"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">White O-O-O</font></font></span></div>
+<div id="wb_cWQ">
+<input type="checkbox" id="cWQ" name="cWQ" value="on" checked=""><label for="cWQ"></label></div>
+<div id="wb_cBQ">
+<input type="checkbox" id="cBQ" name="cBQ" value="on" checked=""><label for="cBQ"></label></div>
+<div id="wb_Text9">
+<span style="color:#FFFFFF;font-family:'Trebuchet MS';font-size:16px;"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">Black O-O-O</font></font></span></div>
+<div id="wb_Shape3">
+<img src="images/img0144.png" id="Shape3" alt=""></div>
+<div id="wb_Text10">
+<span style="color:#FFFFFF;font-family:'Trebuchet MS';font-size:16px;"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">Show move</font></font></span></div>
+<div id="wb_RadioButton1">
+<input type="radio" id="RadioButton1" name="rMode" value="1" checked=""><label for="RadioButton1"></label></div>
+<div id="wb_RadioButton2">
+<input type="radio" id="RadioButton2" name="rMode" value="2"><label for="RadioButton2"></label></div>
+<div id="wb_Text11">
+<span style="color:#FFFFFF;font-family:'Trebuchet MS';font-size:16px;"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">Make move</font></font></span></div>
+<div id="wb_Shape4">
+<img src="images/img0145.png" id="Shape4" alt=""></div>
+<label for="" id="lBestmove"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">Best Move:</font></font></label>
+<input type="text" id="bBest" name="bBest" value="" spellcheck="false">
+<label for="" id="Label1"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">Score:</font></font></label>
+<input type="text" id="bScore" name="bBest" value="" spellcheck="false">
+<input type="text" id="bDepth" name="bBest" value="" spellcheck="false">
+<label for="" id="Label2"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">Depth:</font></font></label>
+<div id="wb_Shape5">
+<img src="images/img0146.png" id="Shape5" alt=""></div>
+<label for="" id="Label3"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">Time to think (seconds):</font></font></label>
+<input type="text" id="bTime" name="bTime" value="1" maxlength="2" spellcheck="false">
+<font style="vertical-align: inherit;"><font style="vertical-align: inherit;"><input type="button" id="bFlip" onmouseenter="SetStyle('bFlip', 'button_hover');return false;" onmouseleave="SetStyle('bFlip', 'button_normal');return false;" onmousedown="SetStyle('bFlip', 'button_down');return false;" onmouseup="SetStyle('bFlip', 'button_hover');return false;" name="bFlip" value="Flip" class="button_normal"></font></font>
+<div id="bProgress" role="progressbar" aria-valuemin="0" class="ui-progressbar ui-corner-all ui-widget ui-widget-content" aria-valuemax="100" aria-valuenow="50">
+<div class="ui-progressbar-value ui-corner-left ui-widget-header" style="width: 55.6%;"></div><div class="ui-progressbar-value ui-corner-left ui-widget-header" style="width: 55.6%;"></div><div class="ui-progressbar-value ui-corner-left ui-widget-header" style="width: 55.6%;"></div><div class="ui-progressbar-value ui-corner-left ui-widget-header" style="width: 55.6%;"></div><div class="ui-progressbar-value ui-corner-left ui-widget-header" style="width: 50%;"></div></div>
+<div id="bTimer" role="progressbar" aria-valuemin="0" class="ui-progressbar ui-corner-all ui-widget ui-widget-content" aria-valuemax="100" aria-valuenow="1">
+<div class="ui-progressbar-value ui-corner-left ui-widget-header" style="width: 0.0999999%;"></div><div class="ui-progressbar-value ui-corner-left ui-widget-header" style="width: 0.0999999%;"></div><div class="ui-progressbar-value ui-corner-left ui-widget-header" style="width: 0.0999999%;"></div><div class="ui-progressbar-value ui-corner-left ui-widget-header" style="width: 0.0999999%;"></div><div class="ui-progressbar-value ui-corner-left ui-widget-header" style="width: 1%;"></div></div>
+<div id="wb_Shape6">
+<img src="images/img0147.png" id="Shape6" alt=""></div>
+<label for="" id="Label4"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">PV:</font></font></label>
+<input type="text" id="bPV" name="bBest" value="" spellcheck="false">
+
+
+<meta charset="UTF-8">
+<title>Bannière centrée horizontalement en haut</title>
+<style>
+  body {
+    margin: 0;
+    padding-top: 20px; /* espace en haut si tu veux */
+    display: flex;
+    justify-content: center; /* centre horizontal */
+    background: #f0f0f0;
+  }
+  .banner {
+    position: relative;
+    width: 482px;
+    height: 50px;
+    background: url('img0145.png') no-repeat center center;
+    background-size: cover;
+    border: 4px solid #d4af37;
+  }
+</style>
+
+
+
+
+
+
+
+
+<div id="wb_Text12">
+<h6 class="Text_BIG"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">This online chess calculator allows you to configure any position on the board by dragging pieces. Press the “Calculate” button to receive the next move recommendation from the Stockfish engine.
+
+</font></font></h6></div>
+<div id="wb_Text14">
+<h6 class="Text_BIG"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">Veuillez accéder à cette page depuis un ordinateur pour accéder au forum en ligne. </font></font><br><br><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">Merci&nbsp;!</font></font><br><br></h6><span style="color:#000000;font-family:'Trebuchet MS';font-size:16px;"><strong><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">Vous souhaitez voir les meilleurs coups directement dans vos parties&nbsp;? </font></font><br><br><font style="vertical-align: inherit;"></font></strong></span><span style="color:#FF0000;font-family:'Trebuchet MS';font-size:16px;"><strong><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">ChessBotX </font></font></strong></span><font style="vertical-align: inherit;"><span style="color:#000000;font-family:'Trebuchet MS';font-size:16px;"><strong><font style="vertical-align: inherit;">est fait pour vous</font></strong></span></font><span style="color:#000000;font-family:'Trebuchet MS';font-size:16px;"><strong><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">&nbsp;! </font></font><br><br><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">Consultez </font></font><a href="./../index.html"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">la page principale de CHESS BOT</font></font></a><font style="vertical-align: inherit;"><font style="vertical-align: inherit;"> .</font></font></strong></span><h6 class="Text_BIG"><br><br><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">ChessBot vous montrera les meilleurs coups directement dans votre partie sur lichess, chess.com et tous les autres sites d'échecs populaires. </font></font><br><br><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">Voici des captures d'écran&nbsp;:</font></font></h6></div>
+<div id="wb_Text15">
+<h6 class="Text_BIG"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">Special thanks to </font></font><a href="https://chessboardjs.com/" target="_blank"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">chessboard.js</font></font></a><font style="vertical-align: inherit;"><font style="vertical-align: inherit;"> , </font></font><a href="https://github.com/jhlywa/chess.js/" target="_blank"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">chess.js</font></font></a><font style="vertical-align: inherit;"><font style="vertical-align: inherit;"> and </font></font><a href="https://github.com/niklasf/stockfish.js/"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">Stockfish</font></font></a><font style="vertical-align: inherit;"><font style="vertical-align: inherit;"> for making this project possible. </font></font></h6></div>
+<font style="vertical-align: inherit;"><font style="vertical-align: inherit;"></font></font>
+<div id="wb_Image12">
+<img src="images/advisor_showcase1.png" id="Image12" alt="Aide aux coups de chess.com" title="robot d'échecs pour chess.com"></div>
+<div id="wb_Image6">
+<img src="images/advisor_showcase2.png" id="Image6" alt="l'aide au prochain mouvement de Lichess" title="bot d'échecs pour lichess"></div>
+</div><img src="img/chesspieces/wikipedia/wP.png" id="3485-e8af-a65b-91e8-e91e-afd1-cfce-b7ee" alt="" class="piece-417db" data-piece="wP" style="width: 49px; height: 49px; display: none;"><img src="img/chesspieces/wikipedia/wP.png" id="2dde-5308-42df-9bb8-1f25-b1fe-6397-9049" alt="" class="piece-417db" data-piece="wP" style="width: 49px; height: 49px; display: none;"><img src="img/chesspieces/wikipedia/wP.png" id="64cc-5365-2064-ddd0-fd2b-ba08-b8b7-fd03" alt="" class="piece-417db" data-piece="wP" style="width: 49px; height: 49px; display: none;"><img src="img/chesspieces/wikipedia/wP.png" id="bfd6-caa0-f0ec-fa09-50ec-280b-8125-c903" alt="" class="piece-417db" data-piece="wP" style="width: 49px; height: 49px; display: none;"><img src="img/chesspieces/wikipedia/wP.png" id="72bb-5a5b-a9d7-b407-0344-b9db-7704-059e" alt="" class="piece-417db" data-piece="wP" style="width: 49px; height: 49px; display: none;">
+<div id="PageHeader1">
+<div id="PageHeader1_Container">
+<div id="wb_Image9">
+<img src="images/header.png" id="Image9" alt="bot de triche aux échecs" title="bot de triche aux échecs"></div>
+<div id="wb_Image1">
+<img src="images/header.jpg" id="Image1" alt="" title=""></div>
+<div id="wb_CssMenu1">
+<ul>
+<li class="firstmain"><a href="./../index.html" target="_self" title="Chess Bot - Principal"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">Principal</font></font></a>
+</li>
+<li><a href="./../instructions.html" target="_self" title="Bot d'échecs - Instructions"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">Instructions</font></font></a>
+</li>
+<li><a href="./../faq.html" target="_self" title="Bot d'échecs - FAQ"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">FAQ</font></font></a>
+</li>
+<li><a href="./../purchase.html" target="_self" title="Bot d'échecs - Achat"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">Achat</font></font></a>
+</li>
+<li><a href="./../video.html" target="_self" title="Robot d'échecs - Vidéo"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">Vidéo</font></font></a>
+</li>
+<li><a href="./../advisor.html" target="_self" title="Bot d'échecs - Conseiller"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">Conseiller</font></font></a>
+</li>
+<li><a href="./../contact.html" target="_self" title="Bot d'échecs - Contacts"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">Contacts</font></font></a>
+</li>
+</ul>
+</div>
+
+
+<div id="wb_Image11">
+<a href="./../purchase.html"></a></div>
+<div id="wb_Image3">
+<a href="https://www.tiktok.com/@chessbotx" target="_blank"></a></div>
+<div id="wb_Image4">
+<a href="https://www.youtube.com/channel/UCTbh7u5XA4NOu0r6QKNt0oA" target="_blank"></a></div>
+</div>
+</div>
+<div id="PageFooter1">
+<div id="PageFooter1_Container">
+<div id="wb_Text1">
+<div>
+<p style="color: #FFFFFF; font-family: 'Fira Sans', sans-serif; margin-top: -20px ; vertical-align: inherit;">
+    CHESS ANALYSIS – NEXT BEST MOVE | 2025
+  </p>
+</div>
+
+
+</div>
+</div>
+<script>
+$('#bFlip').on('click', function () {
+  
+  ClearBoxes();
+  board.flip();
+  updateStatus();
+  ChangeTerm();
+  SetProgress(100 - cur_prog); 
+
+  });
+
+
+$('#bSetPos').on('click', function () {
+  
+  ClearBoxes();
+  board.position($('#fen'). val());
+  updateStatus();
+
+  });
+
+$('#bClear').on('click', function () {
+
+  ClearBoxes(); 
+  
+  SetProgress(50); 
+
+  $('#cWK').prop('checked',false);
+  $('#cBK').prop('checked',false);
+  $('#cWQ').prop('checked',false);
+  $('#cBQ').prop('checked',false);
+
+  board.clear();
+  updateStatus();
+
+  });
+
+$('#bStart').on('click', function () {
+
+ClearBoxes();
+
+SetProgress(50);
+
+$('#rWhite').prop('checked',true);
+$('#cWK').prop('checked',true);
+$('#cBK').prop('checked',true);
+$('#cWQ').prop('checked',true);
+$('#cBQ').prop('checked',true);
+
+  board.start();
+  updateStatus();
+
+  });
+
+$('#cWK').on('click', function () {
+updateStatus();
+});
+$('#cBK').on('click', function () {
+updateStatus();
+});
+$('#cWQ').on('click', function () {
+updateStatus();
+});
+$('#cBQ').on('click', function () {
+updateStatus();
+});
+$('#rWhite').on('click', function () {
+updateStatus();
+});
+$('#rBlack').on('click', function () {
+updateStatus();
+});
+
+</script><div id="goog-gt-tt" class="VIpgJd-yAWNEb-L7lbkb skiptranslate" style="border-radius: 12px; margin: 0 0 0 -23px; padding: 0; font-family: 'Google Sans', Arial, sans-serif;" data-id=""><div id="goog-gt-vt" class="VIpgJd-yAWNEb-hvhgNd"><div class="VIpgJd-yAWNEb-hvhgNd-Ud7fr"><img src="https://fonts.gstatic.com/s/i/productlogos/translate/v14/24px.svg" width="24" height="24" alt=""><div class=" VIpgJd-yAWNEb-hvhgNd-IuizWc-i3jM8c " dir="ltr">Texte d'origine</div></div><div class="VIpgJd-yAWNEb-hvhgNd-k77Iif"><div id="goog-gt-original-text" class="VIpgJd-yAWNEb-nVMfcd-fmcmS VIpgJd-yAWNEb-hvhgNd-axAV1"></div></div><div class="VIpgJd-yAWNEb-hvhgNd-N7Eqid ltr"><div class="VIpgJd-yAWNEb-hvhgNd-N7Eqid-B7I4Od ltr" dir="ltr"><div class="VIpgJd-yAWNEb-hvhgNd-UTujCb">Évaluez cette traduction</div><div class="VIpgJd-yAWNEb-hvhgNd-eO9mKe">Votre avis nous aidera à améliorer Google&nbsp;Traduction</div></div><div class="VIpgJd-yAWNEb-hvhgNd-xgov5 ltr"><button id="goog-gt-thumbUpButton" type="button" class="VIpgJd-yAWNEb-hvhgNd-bgm6sf" title="Bonne traduction" aria-label="Bonne traduction" aria-pressed="false"><span id="goog-gt-thumbUpIcon"><svg width="24" height="24" viewBox="0 0 24 24" focusable="false" class="VIpgJd-yAWNEb-hvhgNd-THI6Vb NMm5M"><path d="M21 7h-6.31l.95-4.57.03-.32c0-.41-.17-.79-.44-1.06L14.17 0S7.08 6.85 7 7H2v13h16c.83 0 1.54-.5 1.84-1.22l3.02-7.05c.09-.23.14-.47.14-.73V9c0-1.1-.9-2-2-2zM7 18H4V9h3v9zm14-7l-3 7H9V8l4.34-4.34L12 9h9v2z"></path></svg></span><span id="goog-gt-thumbUpIconFilled"><svg width="24" height="24" viewBox="0 0 24 24" focusable="false" class="VIpgJd-yAWNEb-hvhgNd-THI6Vb NMm5M"><path d="M21 7h-6.31l.95-4.57.03-.32c0-.41-.17-.79-.44-1.06L14.17 0S7.08 6.85 7 7v13h11c.83 0 1.54-.5 1.84-1.22l3.02-7.05c.09-.23.14-.47.14-.73V9c0-1.1-.9-2-2-2zM5 7H1v13h4V7z"></path></svg></span></button><button id="goog-gt-thumbDownButton" type="button" class="VIpgJd-yAWNEb-hvhgNd-bgm6sf" title="Mauvaise traduction" aria-label="Mauvaise traduction" aria-pressed="false"><span id="goog-gt-thumbDownIcon"><svg width="24" height="24" viewBox="0 0 24 24" focusable="false" class="VIpgJd-yAWNEb-hvhgNd-THI6Vb NMm5M"><path d="M3 17h6.31l-.95 4.57-.03.32c0 .41.17.79.44 1.06L9.83 24s7.09-6.85 7.17-7h5V4H6c-.83 0-1.54.5-1.84 1.22l-3.02 7.05c-.09.23-.14.47-.14.73v2c0 1.1.9 2 2 2zM17 6h3v9h-3V6zM3 13l3-7h9v10l-4.34 4.34L12 15H3v-2z"></path></svg></span><span id="goog-gt-thumbDownIconFilled"><svg width="24" height="24" viewBox="0 0 24 24" focusable="false" class="VIpgJd-yAWNEb-hvhgNd-THI6Vb NMm5M"><path d="M3 17h6.31l-.95 4.57-.03.32c0 .41.17.79.44 1.06L9.83 24s7.09-6.85 7.17-7V4H6c-.83 0-1.54.5-1.84 1.22l-3.02 7.05c-.09.23-.14.47-.14.73v2c0 1.1.9 2 2 2zm16 0h4V4h-4v13z"></path></svg></span></button></div></div><div id="goog-gt-votingHiddenPane" class="VIpgJd-yAWNEb-hvhgNd-aXYTce"><form id="goog-gt-votingForm" action="//translate.googleapis.com/translate_voting?client=te_lib" method="post" target="votingFrame" class="VIpgJd-yAWNEb-hvhgNd-aXYTce"><input type="text" name="sl" id="goog-gt-votingInputSrcLang"><input type="text" name="tl" id="goog-gt-votingInputTrgLang"><input type="text" name="query" id="goog-gt-votingInputSrcText"><input type="text" name="gtrans" id="goog-gt-votingInputTrgText"><input type="text" name="vote" id="goog-gt-votingInputVote"></form><iframe name="votingFrame" frameborder="0"></iframe></div></div></div>
+
+</div></body></html>
